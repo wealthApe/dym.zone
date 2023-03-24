@@ -1,7 +1,0 @@
-[build.environment]
-  NETLIFY_USE_PNPM = "true"
-  NODE_VERSION = "18"
-
-[build]
-  command = "astro build"
-  publish = "dist"
