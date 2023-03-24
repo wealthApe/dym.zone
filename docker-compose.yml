@@ -6,6 +6,6 @@ services:
     container_name: chatgpt-demo
     image: chatgpt-demo
     ports:
-      - 3000:3000
+      - 5678:5678
     volumes:
       - .env:/usr/src/.env

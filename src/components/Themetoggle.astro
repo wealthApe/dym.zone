@@ -1,5 +1,9 @@
-<button id="themeToggle" class="flex items-center justify-center w-10 h-10 rounded-md border transition-colors hover:bg-slate/10">
-  <svg width="1.2rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+<button
+  id="themeToggle"
+  class="flex items-center justify-center w-10 h-10 rounded-md border transition-colors hover:bg-slate/10"
+  onclick="handleToggleTheme()"
+>
+  <svg width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path
       class="sun"
       fill-rule="evenodd"
@@ -14,9 +18,6 @@
 </button>
 
 <style>
-  #themeToggle {
-    border: 0;
-  }
   .sun {
     fill: black;
   }
@@ -27,27 +28,40 @@
     fill: transparent;
   }
   :global(html.dark) .moon {
-    fill: white;
+    fill: grey;
   }
 </style>
 
-<script>
-const listenColorSchema = () => {
-  const colorSchema = window.matchMedia('(prefers-color-scheme: dark)')
-  colorSchema.addEventListener('change', () => {
-    document.documentElement.classList.toggle('dark', colorSchema.matches)
-  })
-}
+<script is:inline>
+  const persistentTheme = localStorage.getItem("theme")
+  const darkSchema = window.matchMedia("(prefers-color-scheme: dark)")
+  function toggle(flag) {
+    document.documentElement.classList.toggle("dark", flag)
+    document
+      .querySelector('meta[name="theme-color"]')
+      .setAttribute("content", flag ? "#16161a" : "#f6f8fa")
+  }
 
-listenColorSchema()
+  function listener() {
+    toggle(darkSchema?.matches)
+  }
 
-const handleToggleClick = () => {
-  const element = document.documentElement
-  element.classList.toggle('dark')
-  const isDark = element.classList.contains('dark')
-  localStorage.setItem('theme', isDark ? 'dark' : 'light')
-}
-document
-  .getElementById('themeToggle')
-  .addEventListener('click', handleToggleClick)
+  if (persistentTheme) {
+    toggle(persistentTheme === "dark")
+  } else {
+    darkSchema.addEventListener("change", listener)
+    toggle(darkSchema?.matches)
+  }
+
+  function handleToggleTheme() {
+    const element = document.documentElement
+    element.classList.toggle("dark")
+
+    const isDark = element.classList.contains("dark")
+    document
+      .querySelector('meta[name="theme-color"]')
+      .setAttribute("content", isDark ? "#16161a" : "#f6f8fa")
+    darkSchema.removeEventListener("change", listener)
+    localStorage.setItem("theme", isDark ? "dark" : "light")
+  }
 </script>

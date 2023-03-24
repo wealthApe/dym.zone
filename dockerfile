@@ -6,8 +6,8 @@ COPY package.json pnpm-lock.yaml /usr/src/
 RUN pnpm install
 COPY . /usr/src
 RUN pnpm run build
-EXPOSE 3000
+EXPOSE 5678
 ENV HOST=0.0.0.0
-ENV PORT=3000
+ENV PORT=5678
 ENV NODE_ENV=production
 CMD node dist/server/entry.mjs

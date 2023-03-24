@@ -1,9 +1,6 @@
 export interface ChatMessage {
-  role: 'system' | 'user' | 'assistant'
+  role: Role
   content: string
 }
 
-export interface ErrorMessage {
-  code: string
-  message: string
-}
+export type Role = "system" | "user" | "assistant" | "error"
